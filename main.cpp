@@ -277,7 +277,7 @@ public:
         }
     }
 
-    bool dealerTurn(Deck& deck, Player& dealer);
+    bool dealerTurn(Deck& deck, Player& dealer)
     {
         while (dealer.score() < minimumDealerScore)
         {
