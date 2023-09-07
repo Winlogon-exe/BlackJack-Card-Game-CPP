@@ -1,9 +1,9 @@
-#include <algorithm> // std::shuffle
+п»ї#include <algorithm> // std::shuffle
 #include <array>
 #include <ctime>     // std::time
 #include <iostream>
 #include <random>    // std::mt19937
-#include <vector>    // Добавляем заголовок для std::vector
+#include <vector>    // Р”РѕР±Р°РІР»СЏРµРј Р·Р°РіРѕР»РѕРІРѕРє РґР»СЏ std::vector
 
 enum class Suit {
     Clubs,
@@ -29,7 +29,7 @@ struct Card {
 
 class Deck {
 private:
-    std::vector<Card> deck; // Заменяем std::array на std::vector
+    std::vector<Card> deck; // Р—Р°РјРµРЅСЏРµРј std::array РЅР° std::vector
 public:
     Deck() {
         for (int suit = static_cast<int>(Suit::Clubs); suit <= static_cast<int>(Suit::Spades); suit++) {
@@ -45,7 +45,7 @@ public:
     }
 
     Card drawCard() {
-        // Вытягиваем карту из колоды и возвращаем ее
+        // Р’С‹С‚СЏРіРёРІР°РµРј РєР°СЂС‚Сѓ РёР· РєРѕР»РѕРґС‹ Рё РІРѕР·РІСЂР°С‰Р°РµРј РµРµ
         Card drawnCard = deck.back();
         deck.pop_back();
         return drawnCard;
@@ -53,7 +53,7 @@ public:
 
     void print() const {
         for (const Card& card : deck) {
-            // Выводим масть и номинал каждой карты
+            // Р’С‹РІРѕРґРёРј РјР°СЃС‚СЊ Рё РЅРѕРјРёРЅР°Р» РєР°Р¶РґРѕР№ РєР°СЂС‚С‹
             switch (card.suit) {
             case Suit::Clubs:
                 std::cout << "Clubs ";
@@ -150,7 +150,7 @@ protected:
     Player dealer;
 
 public:
-    Casino() : deck(), player(), dealer() {//?? смысл если не могу создать 
+    Casino() : deck(), player(), dealer() {//?? СЃРјС‹СЃР» РµСЃР»Рё РЅРµ РјРѕРіСѓ СЃРѕР·РґР°С‚СЊ 
         deck.shuffle();
     }
 
@@ -199,7 +199,7 @@ public:
         return player.score() > maximumScore;
     }
 
-    // Возвращает true, если у игрока «перебор». В противном случае - false.
+    // Р’РѕР·РІСЂР°С‰Р°РµС‚ true, РµСЃР»Рё Сѓ РёРіСЂРѕРєР° В«РїРµСЂРµР±РѕСЂВ». Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - false.
     bool playerTurn(Deck& deck, Player& player)
     {
         while (true)
@@ -218,7 +218,7 @@ public:
                 }
                 else
                 {
-                    // у игрока нет перебора.
+                    // Сѓ РёРіСЂРѕРєР° РЅРµС‚ РїРµСЂРµР±РѕСЂР°.
                     return false;
                 }
             }
@@ -243,7 +243,7 @@ private:
 
 public:
     bool play(Deck& deck) override {
-        // Реализуйте логику игры в Девятку здесь
+        // Р РµР°Р»РёР·СѓР№С‚Рµ Р»РѕРіРёРєСѓ РёРіСЂС‹ РІ Р”РµРІСЏС‚РєСѓ Р·РґРµСЃСЊ
     }
 
     bool isBust()
@@ -251,7 +251,7 @@ public:
         return player.score() > maximumScore;
     }
 
-    // Возвращает true, если у игрока «перебор». В противном случае - false.
+    // Р’РѕР·РІСЂР°С‰Р°РµС‚ true, РµСЃР»Рё Сѓ РёРіСЂРѕРєР° В«РїРµСЂРµР±РѕСЂВ». Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - false.
     bool playerTurn(Deck& deck, Player& player)
     {
         while (true)
@@ -270,7 +270,7 @@ public:
                 }
                 else
                 {
-                    // у игрока нет перебора.
+                    // Сѓ РёРіСЂРѕРєР° РЅРµС‚ РїРµСЂРµР±РѕСЂР°.
                     return false;
                 }
             }
@@ -289,7 +289,7 @@ public:
 };
 
 
-//markkdown: Проблема в том что выигрывает тот у кого больше число!!!
+//markkdown: РџСЂРѕР±Р»РµРјР° РІ С‚РѕРј С‡С‚Рѕ РІС‹РёРіСЂС‹РІР°РµС‚ С‚РѕС‚ Сѓ РєРѕРіРѕ Р±РѕР»СЊС€Рµ С‡РёСЃР»Рѕ!!!
 int main() {
     Deck deck;
     deck.shuffle();
@@ -309,7 +309,7 @@ int main() {
         std::cin >> ch;
 
         if (ch != 'y') {
-            break; // Если игрок не хочет играть ещё раз, завершаем игру.
+            break; // Р•СЃР»Рё РёРіСЂРѕРє РЅРµ С…РѕС‡РµС‚ РёРіСЂР°С‚СЊ РµС‰С‘ СЂР°Р·, Р·Р°РІРµСЂС€Р°РµРј РёРіСЂСѓ.
         }
     }
 
