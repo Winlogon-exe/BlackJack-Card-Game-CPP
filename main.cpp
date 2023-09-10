@@ -195,7 +195,6 @@ public:
             return GameResult::IsTie;
         }
 
-        std::cout << "The dealer is showing: " << dealer.score() << '\n';
         return player.score() > dealer.score() ? GameResult::PlayerWon : GameResult::DealerWon;
     }
 
