@@ -274,21 +274,21 @@ public:
 
 
 int main() {
-    while (true) {
+    Deck deck; 
 
-        Deck deck; 
-        deck.shuffle(); 
-        Blackjack blackJack;
-        GameResult result = blackJack.play(deck);
+    while (true) {
+        deck.shuffle(); // Перемешиваем существующую колоду перед каждым раундом 
+        Blackjack blackJack; 
+        GameResult result = blackJack.play(deck); 
 
         switch (result) {
-        case GameResult::PlayerWon:
-            std::cout << "You win!\n";
+        case GameResult::PlayerWon: 
+            std::cout << "You win!\n"; 
             break;
-        case GameResult::DealerWon:
+        case GameResult::DealerWon: 
             std::cout << "You lose!\n";
             break;
-        case GameResult::IsTie:
+        case GameResult::IsTie: 
             std::cout << "Tie!\n";
             break;
         }
@@ -300,7 +300,6 @@ int main() {
         if (ch != 'y') {
             break; // Если игрок не хочет играть ещё раз, завершаем игру.
         }
-
     }
     return 0;
 }
