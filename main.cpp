@@ -187,7 +187,7 @@ public:
         if (dealerTurn(deck, dealer)) {
             return GameResult::PlayerWon;
         }
-        if (player.score() == dealer.score()) {
+        if (player.score() == dealer.score()) { 
             return GameResult::IsTie;
         }
 
@@ -271,10 +271,9 @@ public:
 
 int main() {
     Deck deck;
-    deck.shuffle();
-    deck.shuffle();
-    Blackjack a; 
-    GameResult result = a.play(deck);
+    deck.print();
+    Blackjack blackJack; 
+    GameResult result = blackJack.play(deck); 
 
     switch (result) {
     case GameResult::PlayerWon:
