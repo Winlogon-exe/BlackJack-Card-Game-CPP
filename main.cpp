@@ -22,6 +22,7 @@ enum class Rank {
     King = 13,
     Ace = 14
 };
+
 struct Card {
     Suit suit;
     Rank rank;
@@ -150,10 +151,6 @@ protected:
     Player dealer;
 
 public:
-    Casino() : deck(), player(), dealer() {//?? смысл если не могу создать 
-        deck.shuffle();
-    }
-
     virtual bool play(Deck& deck) = 0;
     virtual bool playerTurn(Deck& deck, Player& player) = 0;
     virtual bool isBust() = 0;
@@ -168,17 +165,13 @@ private:
 public:
     bool play(Deck& deck) override
     {
-        Player dealer{};
-        Player player{};
-
-        dealer.resetHand();
+        dealer.resetHand(); 
         player.resetHand();
 
         dealer.drawCard(deck);
 
         std::cout << "The dealer is showing: " << dealer.score() << '\n';
 
-        player.drawCard(deck);
         player.drawCard(deck);
 
         if (playerTurn(deck, player))
@@ -191,12 +184,12 @@ public:
             return true;
         }
         std::cout << "The dealer is showing: " << dealer.score() << '\n';
-        return (player.score() > dealer.score());
+        return (player.score() > dealer.score());//??
     }
 
     bool isBust()
     {
-        return player.score() > maximumScore;
+        return player.score() > maximumScore || dealer.score() > maximumScore;
     }
 
     // Возвращает true, если у игрока «перебор». В противном случае - false.
@@ -208,31 +201,41 @@ public:
 
             if (isBust())
             {
+                // у игрока перебора.
                 return true;
+            }
+            
+            else if (player.playerWantsHit())
+            {
+                player.drawCard(deck);
+                //playblackjack
             }
             else
             {
-                if (player.playerWantsHit())
-                {
-                    player.drawCard(deck);
-                }
-                else
-                {
-                    // у игрока нет перебора.
-                    return false;
-                }
+                // у игрока нет перебора.
+                return false;
             }
+            
         }
     }
 
     bool dealerTurn(Deck& deck, Player& dealer)
     {
-        while (dealer.score() < minimumDealerScore)
+        while (dealer.score() < minimumDealerScore)//????
         {
             dealer.drawCard(deck);
         }
-
-        return isBust();
+        if (isBust())
+        {
+            //диллер проиграл
+            std::cout << "The dealer is showing: " << dealer.score() << '\n';
+            return true;
+        }
+        else
+        {
+            //диллер выгирал
+            return false;
+        }
     }
 };
 
@@ -289,9 +292,10 @@ public:
 };
 
 
-//markkdown: Проблема в том что выигрывает тот у кого больше число!!!
+//markdown: Проблема в том что выигрывает тот у кого больше число!!!
 int main() {
     Deck deck;
+    deck.shuffle();
     deck.shuffle();
 
     while (true) {
