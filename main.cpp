@@ -31,7 +31,7 @@ struct Card {
 enum class GameResult {
     PlayerWon,
     DealerWon,
-    GameInProgress
+    IsTie
 };
 
 class Deck {
@@ -157,7 +157,7 @@ protected:
     Player dealer;
 
 public:
-    virtual GameResult  play(Deck& deck) = 0; 
+    virtual GameResult play(Deck& deck) = 0; 
     virtual bool playerTurn(Deck& deck, Player& player) = 0;
     virtual bool isBust() = 0;
     virtual bool dealerTurn(Deck& deck, Player& dealer) = 0;
@@ -169,8 +169,6 @@ private:
     int minimumDealerScore = 17;
 
 public:
-    
-
     GameResult play(Deck& deck) override {
         dealer.resetHand();
         player.resetHand();
@@ -180,6 +178,7 @@ public:
         std::cout << "The dealer is showing: " << dealer.score() << '\n';
 
         player.drawCard(deck);
+        player.drawCard(deck);
 
         if (playerTurn(deck, player)) {
             return GameResult::DealerWon;
@@ -188,16 +187,18 @@ public:
         if (dealerTurn(deck, dealer)) {
             return GameResult::PlayerWon;
         }
+        if (player.score() == dealer.score()) {
+            return GameResult::IsTie;
+        }
 
         std::cout << "The dealer is showing: " << dealer.score() << '\n';
-        return (player.score() > dealer.score()) ? GameResult::PlayerWon : GameResult::DealerWon;
+        return player.score() > dealer.score() ? GameResult::PlayerWon : GameResult::DealerWon;
     }
 
     bool isBust() {
         return player.score() > maximumScore || dealer.score() > maximumScore;
     }
 
-    // Возвращает true, если у игрока «перебор». В противном случае - false.
      // Возвращает true, если у игрока «перебор». В противном случае - false.
     bool playerTurn(Deck& deck, Player& player) {
         while (true) {
@@ -282,8 +283,8 @@ int main() {
     case GameResult::DealerWon:
         std::cout << "You lose!\n";
         break;
-    case GameResult::GameInProgress:
-        // Обработка ситуации, когда игра ещё не завершена.
+    case GameResult::IsTie:
+        std::cout << "Tie!\n";
         break;
     }
 }
