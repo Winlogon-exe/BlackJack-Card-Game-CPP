@@ -224,18 +224,19 @@ public:
         while (dealer.score() < minimumDealerScore)//????
         {
             dealer.drawCard(deck);
+
         }
         if (isBust())
         {
             //диллер проиграл
-            std::cout << "The dealer is showing: " << dealer.score() << '\n';
             return true;
         }
         else
         {
-            //диллер выгирал
+            //диллер выиграл
             return false;
         }
+        std::cout << "The dealer is showing: " << dealer.score() << '\n';
     }
 };
 
@@ -302,6 +303,7 @@ int main() {
         Blackjack a;
 
         if (a.play(deck)) {
+
             std::cout << "You win!\n";
         }
         else {
