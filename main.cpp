@@ -38,6 +38,7 @@ class Deck {
 private:
     std::vector<Card> deck; 
 public:
+    //заполняем колоду
     Deck() {
         for (int suit = static_cast<int>(Suit::Clubs); suit <= static_cast<int>(Suit::Spades); suit++) {
             for (int rank = static_cast<int>(Rank::Six); rank <= static_cast<int>(Rank::Ace); rank++) {
@@ -46,18 +47,20 @@ public:
         }
     }
 
+    //перемешиваем колоду
     void shuffle() {
         static std::mt19937 mt{ std::random_device{}() };
         std::shuffle(deck.begin(), deck.end(), mt);
     }
 
+    // Вытягиваем карту из колоды и возвращаем ее
     Card drawCard() {
-        // Вытягиваем карту из колоды и возвращаем ее
         Card drawnCard = deck.back();
         deck.pop_back();
         return drawnCard;
     }
 
+    //check shuffle
     void print() const {
         for (const Card& card : deck) {
             // Выводим масть и номинал каждой карты
@@ -115,6 +118,7 @@ private:
     int playerScore = 0;
     std::vector<Card> hand;
 public:
+    //Возвращаем карту игроку
     void drawCard(Deck& deck) {
         Card drawnCard = deck.drawCard();
         hand.push_back(drawnCard);
@@ -270,22 +274,33 @@ public:
 
 
 int main() {
-    Deck deck;
-    deck.shuffle();
-    Blackjack blackJack; 
-    GameResult result = blackJack.play(deck); 
+    while (true) {
 
-    switch (result) {
-    case GameResult::PlayerWon:
-        std::cout << "You win!\n";
-        break;
-    case GameResult::DealerWon:
-        std::cout << "You lose!\n";
-        break;
-    case GameResult::IsTie:
-        std::cout << "Tie!\n";
-        break;
+        Deck deck; 
+        deck.shuffle(); 
+        Blackjack blackJack;
+        GameResult result = blackJack.play(deck);
+
+        switch (result) {
+        case GameResult::PlayerWon:
+            std::cout << "You win!\n";
+            break;
+        case GameResult::DealerWon:
+            std::cout << "You lose!\n";
+            break;
+        case GameResult::IsTie:
+            std::cout << "Tie!\n";
+            break;
+        }
+
+        std::cout << "Do you want to play another round? (y/n): ";
+        char ch;
+        std::cin >> ch;
+
+        if (ch != 'y') {
+            break; // Если игрок не хочет играть ещё раз, завершаем игру.
+        }
+
     }
+    return 0;
 }
-
-
