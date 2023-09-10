@@ -3,7 +3,7 @@
 #include <ctime>     // std::time
 #include <iostream>
 #include <random>    // std::mt19937
-#include <vector>    // Добавляем заголовок для std::vector
+#include <vector>    
 
 enum class Suit {
     Clubs,
@@ -36,7 +36,7 @@ enum class GameResult {
 
 class Deck {
 private:
-    std::vector<Card> deck; // Заменяем std::array на std::vector
+    std::vector<Card> deck; 
 public:
     Deck() {
         for (int suit = static_cast<int>(Suit::Clubs); suit <= static_cast<int>(Suit::Spades); suit++) {
@@ -271,7 +271,7 @@ public:
 
 int main() {
     Deck deck;
-    deck.print();
+    deck.shuffle();
     Blackjack blackJack; 
     GameResult result = blackJack.play(deck); 
 
