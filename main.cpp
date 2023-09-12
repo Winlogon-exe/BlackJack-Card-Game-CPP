@@ -36,9 +36,9 @@ enum class GameResult {
 
 class Deck {
 private:
-    std::vector<Card> deck; 
+    std::vector<Card> deck;
 public:
-    //заполняем колоду
+    // Конструктор, который заполняет колоду картами
     Deck() {
         for (int suit = static_cast<int>(Suit::Clubs); suit <= static_cast<int>(Suit::Spades); suit++) {
             for (int rank = static_cast<int>(Rank::Six); rank <= static_cast<int>(Rank::Ace); rank++) {
@@ -47,20 +47,20 @@ public:
         }
     }
 
-    //перемешиваем колоду
+    // Функция для перемешивания колоды
     void shuffle() {
         static std::mt19937 mt{ std::random_device{}() };
         std::shuffle(deck.begin(), deck.end(), mt);
     }
 
-    // Вытягиваем карту из колоды и возвращаем ее
+    // Функция для вытягивания карты из колоды и возврата её
     Card drawCard() {
         Card drawnCard = deck.back();
         deck.pop_back();
         return drawnCard;
     }
 
-    //check shuffle
+    // Функция для вывода содержимого колоды (для проверки перемешивания)
     void print() const {
         for (const Card& card : deck) {
             // Выводим масть и номинал каждой карты
@@ -118,17 +118,19 @@ private:
     int playerScore = 0;
     std::vector<Card> hand;
 public:
-    //Возвращаем карту игроку
+    // Функция для вытягивания карты игроку
     void drawCard(Deck& deck) {
         Card drawnCard = deck.drawCard();
         hand.push_back(drawnCard);
         playerScore += static_cast<int>(drawnCard.rank);
     }
 
+    // Функция для получения суммы очков игрока
     int score() const {
         return playerScore;
     }
 
+    // Функция для определения, хочет ли игрок взять ещё карту
     bool playerWantsHit()
     {
         while (true)
@@ -148,6 +150,7 @@ public:
         }
     }
 
+    // Функция для сброса карт из руки игрока и счёта очков
     void resetHand() {
         hand.clear();
         playerScore = 0;
@@ -161,9 +164,16 @@ protected:
     Player dealer;
 
 public:
-    virtual GameResult play(Deck& deck) = 0; 
+    // Виртуальная функция для начала игры (полиморфизм)
+    virtual GameResult play(Deck& deck) = 0;
+
+    // Виртуальная функция для хода игрока (полиморфизм)
     virtual bool playerTurn(Deck& deck, Player& player) = 0;
+
+    // Виртуальная функция для проверки перебора
     virtual bool isBust() = 0;
+
+    // Виртуальная функция для хода дилера (полиморфизм)
     virtual bool dealerTurn(Deck& deck, Player& dealer) = 0;
 };
 
@@ -173,6 +183,7 @@ private:
     int minimumDealerScore = 17;
 
 public:
+    // Функция для проведения игры в Блэкджек
     GameResult play(Deck& deck) override {
         dealer.resetHand();
         player.resetHand();
@@ -191,18 +202,19 @@ public:
         if (dealerTurn(deck, dealer)) {
             return GameResult::PlayerWon;
         }
-        if (player.score() == dealer.score()) { 
+        if (player.score() == dealer.score()) {
             return GameResult::IsTie;
         }
 
         return player.score() > dealer.score() ? GameResult::PlayerWon : GameResult::DealerWon;
     }
 
+    // Функция для проверки перебора
     bool isBust() {
         return player.score() > maximumScore || dealer.score() > maximumScore;
     }
 
-     // Возвращает true, если у игрока «перебор». В противном случае - false.
+    // Функция для хода игрока в Блэкджек
     bool playerTurn(Deck& deck, Player& player) {
         while (true) {
             std::cout << "You have: " << player.score() << '\n';
@@ -219,6 +231,7 @@ public:
         }
     }
 
+    // Функция для хода дилера в Блэкджек
     bool dealerTurn(Deck& deck, Player& dealer) {
         while (dealer.score() < minimumDealerScore) {
             dealer.drawCard(deck);
@@ -234,16 +247,18 @@ private:
     int minimumDealerScore = 6;
 
 public:
+    // Реализуйте логику игры в Девятку здесь
     GameResult play(Deck& deck) override {
-        // Реализуйте логику игры в Девятку здесь
+        // Реализация правил игры в Девятку
     }
 
+    // Функция для проверки перебора
     bool isBust()
     {
-        return player.score() > maximumScore; 
+        return player.score() > maximumScore;
     }
 
-    // Возвращает true, если у игрока «перебор». В противном случае - false.
+    // Функция для хода игрока в Девятку
     bool playerTurn(Deck& deck, Player& player) {
         while (true) {
             std::cout << "You have: " << player.score() << '\n';
@@ -260,6 +275,7 @@ public:
         }
     }
 
+    // Функция для хода дилера в Девятку
     bool dealerTurn(Deck& deck, Player& dealer)
     {
         while (dealer.score() < minimumDealerScore)
@@ -273,21 +289,21 @@ public:
 
 
 int main() {
-    Deck deck; 
+    Deck deck;
 
     while (true) {
         deck.shuffle(); // Перемешиваем существующую колоду перед каждым раундом 
-        Blackjack blackJack; 
-        GameResult result = blackJack.play(deck); 
+        Blackjack blackJack;
+        GameResult result = blackJack.play(deck);
 
         switch (result) {
-        case GameResult::PlayerWon: 
-            std::cout << "You win!\n"; 
+        case GameResult::PlayerWon:
+            std::cout << "You win!\n";
             break;
-        case GameResult::DealerWon: 
+        case GameResult::DealerWon:
             std::cout << "You lose!\n";
             break;
-        case GameResult::IsTie: 
+        case GameResult::IsTie:
             std::cout << "Tie!\n";
             break;
         }
