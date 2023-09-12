@@ -188,6 +188,8 @@ public:
         dealer.resetHand();
         player.resetHand();
 
+        deck.shuffle(); // Перемешиваем существующую колоду перед каждым раундом  
+
         dealer.drawCard(deck);
 
         std::cout << "The dealer is showing: " << dealer.score() << '\n';
@@ -291,9 +293,8 @@ public:
 int main() {
     while (true) {
         Deck deck;
-        deck.shuffle(); // Перемешиваем существующую колоду перед каждым раундом 
         Blackjack blackJack;
-        GameResult result = blackJack.play(deck);
+        GameResult result = blackJack.play(deck); 
 
         switch (result) {
         case GameResult::PlayerWon:
