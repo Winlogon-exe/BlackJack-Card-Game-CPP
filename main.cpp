@@ -289,9 +289,8 @@ public:
 
 
 int main() {
-    Deck deck;
-
     while (true) {
+        Deck deck;
         deck.shuffle(); // Перемешиваем существующую колоду перед каждым раундом 
         Blackjack blackJack;
         GameResult result = blackJack.play(deck);
